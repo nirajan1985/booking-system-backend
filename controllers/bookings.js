@@ -11,9 +11,6 @@ const Booking = db.Booking;
 exports.create = (req, res) => {
   const { startTime, endTime, userId, roomId, bookingTitle } = req.body;
 
-  
- 
-
   // Validate request
   if (!startTime || !endTime || !userId || !roomId || !bookingTitle) {
     res.status(400).send({
@@ -37,15 +34,15 @@ exports.create = (req, res) => {
         where: {
           roomId: roomId,
           startTime: {
-            [db.Sequelize.Op.lt]: new Date(endTime)
+            [db.Sequelize.Op.lt]: new Date(endTime),
           },
           endTime: {
-            [db.Sequelize.Op.gt]: new Date(startTime)
-          }
-        }
+            [db.Sequelize.Op.gt]: new Date(startTime),
+          },
+        },
       });
     })
-    .then(existingBooking => {
+    .then((existingBooking) => {
       if (existingBooking) {
         res.status(400).send({
           message: "The room is already booked for the specified time range.",
@@ -59,7 +56,7 @@ exports.create = (req, res) => {
         endTime: endTime,
         userId: userId,
         roomId: roomId,
-        bookingTitle: bookingTitle
+        bookingTitle: bookingTitle,
       };
 
       // Save Booking in the database
@@ -70,7 +67,8 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the Booking.",
+        message:
+          err.message || "Some error occurred while creating the Booking.",
       });
     });
 };
@@ -108,26 +106,26 @@ exports.getAll = (req, res) => {
  */
 exports.getById = (req, res) => {
   const id = req.params.id;
-  
+
   Booking.findByPk(id)
-    .then(booking => {
+    .then((booking) => {
       if (booking) {
         res.status(200).json({
           success: true,
-          data: booking
+          data: booking,
         });
       } else {
         res.status(404).json({
           success: false,
-          message: 'Booking not found'
+          message: "Booking not found",
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json({
         success: false,
-        message: 'Server error',
-        error: err.message
+        message: "Server error",
+        error: err.message,
       });
     });
 };
@@ -142,30 +140,30 @@ exports.getById = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   const updatedData = req.body;
-  
+
   Booking.findByPk(id)
-    .then(booking => {
+    .then((booking) => {
       if (booking) {
-        return booking.update(updatedData);  // Update the booking
+        return booking.update(updatedData); // Update the booking
       } else {
         res.status(404).json({
           success: false,
-          message: 'Booking not found'
+          message: "Booking not found",
         });
       }
     })
-    .then(updatedBooking => {
+    .then((updatedBooking) => {
       res.status(200).json({
         success: true,
         data: updatedBooking,
-        message: 'Booking updated successfully'
+        message: "Booking updated successfully",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json({
         success: false,
-        message: 'Server error',
-        error: err.message
+        message: "Server error",
+        error: err.message,
       });
     });
 };
@@ -178,29 +176,29 @@ exports.update = (req, res) => {
  */
 exports.delete = (req, res) => {
   const id = req.params.id;
-  
+
   Booking.findByPk(id)
-    .then(booking => {
+    .then((booking) => {
       if (booking) {
-        return booking.destroy();  // Delete the booking
+        return booking.destroy(); // Delete the booking
       } else {
         res.status(404).json({
           success: false,
-          message: 'Booking not found'
+          message: "Booking not found",
         });
       }
     })
     .then(() => {
       res.status(200).json({
         success: true,
-        message: 'Booking deleted successfully'
+        message: "Booking deleted successfully",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json({
         success: false,
-        message: 'Server error',
-        error: err.message
+        message: "Server error",
+        error: err.message,
       });
     });
 };

@@ -1,31 +1,31 @@
-const db = require('../models');
+const db = require("../models");
 const Room = db.rooms;
 
 exports.create = (req, res) => {
   const room = {
     name: req.body.name,
-    capacity: req.body.capacity
+    capacity: req.body.capacity,
   };
 
   Room.create(room)
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while creating the Room."
+        message: err.message || "Some error occurred while creating the Room.",
       });
     });
 };
 
 exports.getAll = (req, res) => {
   Room.findAll()
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while getting all rooms."
+        message: err.message || "Some error occurred while getting all rooms.",
       });
     });
 };

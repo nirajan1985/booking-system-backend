@@ -18,7 +18,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'", "http://localhost:3000"],
+        connectSrc: ["'self'", "http://localhost:8080"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         upgradeInsecureRequests: [],
       },
@@ -46,8 +46,8 @@ app.use((err, req, res, next) => {
 db.sequelize
   .sync()
   .then(() => {
-    app.listen(3000, () => {
-      console.log("Server is running on port 3000");
+    app.listen(8080, () => {
+      console.log("Server is running on port 8080");
     });
   })
   .catch((error) => {
